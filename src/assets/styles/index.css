@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@import "./variables.css";
+
+@theme {
+    --color-gd-body: #0A100D;
+    --color-gd-surface-dark: #3A4A40;
+    --color-gd-cream: #F5F5DB;
+    --color-gd-text: #DDEAE1;
+    --color-gd-muted: #9CA3AF;
+    --color-gd-blue: #0090BE;
+    --color-gd-green: #95BF75;
+    --color-gd-border: #1F2933;
+
+    --font-heading: "Baloo Bhaijaan 2", system-ui, sans-serif;
+    --font-body: "Merriweather Sans", system-ui, sans-serif;
+
+    --max-width-gd-page: 1120px;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: var(--font-body);
+        background-color: var(--color-gd-body);
+        color: var(--color-gd-text);
+        min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-heading);
+    }
+}

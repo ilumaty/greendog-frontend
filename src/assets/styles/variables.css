@@ -1,0 +1,16 @@
+/** variables GreenDog **/
+
+:root {
+    --gd-body: #0a100d;
+    --gd-surface-dark: #3a4a40;
+    --gd-cream: #f5f5db;
+    --gd-text: #ddeae1;
+    --gd-muted: #9ca3af;
+    --gd-blue: #0090be;
+    --gd-green: #95bf75;
+    --gd-border: #1f2933;
+
+    --gd-radius-lg: 1rem;
+    --gd-radius-xl: 1.5rem;
+    --gd-page-width: 1120px;
+}
