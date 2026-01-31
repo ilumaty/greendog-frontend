@@ -14,6 +14,20 @@ const breedsAPI = {
     getById: (id) => {
         return api.get(`/dogs/breeds/${id}`)
     },
+
+    // Créer une race (ADMIN)
+    create: (data) => {
+        return api.post('/dogs/breeds', data)
+    },
+    // Modifier une race (ADMIN)
+    update: (id, data) => {
+        return api.put(`/dogs/breeds/${id}`, data)
+    },
+
+    // Supprimer une race (ADMIN)
+    delete: (id) => {
+        return api.delete(`/dogs/breeds/${id}`)
+    }
 }
 
 export default breedsAPI

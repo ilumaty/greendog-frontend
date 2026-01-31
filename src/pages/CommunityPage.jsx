@@ -406,7 +406,7 @@ function CommunityPage() {
                                         BOUTONS MODIFIER + SUPPRIMER
                                         (visibles uniquement pour l'auteur)
                                         */}
-                                    {user && post.author?._id === user._id && (
+                                    {user && (post.author?._id === user._id || user.role === 'admin') && (
                                         <div className="flex items-center gap-2">
                                             {/* Bouton Modifier (crayon) */}
                                             <button

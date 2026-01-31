@@ -8,7 +8,7 @@ import authAPI from '../api/Auth'
 
 const useAuthStore = create(
     persist(
-        (set) => ({
+        (set, get) => ({
             // état de base
             user: null,
             token: null,
@@ -64,7 +64,7 @@ const useAuthStore = create(
 
             // Récupère le profil depuis le serveur (validation du token + sync données)
             fetchProfile: async () => {
-                const token = useAuthStore.getState().token
+                const token = get().token
 
                 // pas de token stocké = pas de requête
                 if (!token) {
@@ -137,7 +137,7 @@ const useAuthStore = create(
                 if (state) {
                     // Si l'user semble connecté, vérifie le token
                     if (state.isAuthenticated && state.token) {
-                        state.fetchProfile()
+                        void state.fetchProfile()
                     } else {
                     state.setHydrated()
                     }

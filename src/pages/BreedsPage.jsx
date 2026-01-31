@@ -4,12 +4,26 @@ pages/BreedsPage.jsx
 
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useBreedsStore } from '../store'
+import { useBreedsStore, useAuthStore, notificationStore } from '../store'
 import { DOG_SIZES, ACTIVITY_LEVELS } from '../utils/constants'
+import breedsAPI from '../api/Breeds'
 
 function BreedsPage() {
+    const { user } = useAuthStore()
     const { breeds, filters, isLoading, error, fetchBreeds, setFilters, resetFilters } = useBreedsStore()
     const [searchQuery, setSearchQuery] = useState('')
+
+    // Admin, add race
+    const [showAddForm, setShowAddForm] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [newBreed, setNewBreed] = useState({
+        name: '',
+        description: '',
+        origin: '',
+        size: '',
+        activityLevel: '',
+        imageUrl: ''
+    })
 
     // Charger les races au montage
     useEffect(() => {
@@ -17,7 +31,10 @@ function BreedsPage() {
     }, [fetchBreeds])
 
     // Breeds avec une valeur par défaut
-    const safeBreeds = Array.isArray(breeds) ? breeds : []
+    const safeBreeds =
+        Array.isArray(breeds) ? breeds
+            : Array.isArray(breeds?.breeds) ? breeds.breeds
+                : []
 
 
     // Filtrer par recherche locale
@@ -37,6 +54,46 @@ function BreedsPage() {
         resetFilters()
     }
 
+    // Admin soumets une nouvelle race
+    const handleSubmitBreed = async (e) => {
+        e.preventDefault()
+
+        if (!newBreed.name.trim() || !newBreed.description.trim() || !newBreed.size) {
+            notificationStore.error('Nom, description et taille sont requis')
+            return
+        }
+
+        setIsSubmitting(true)
+        try {
+            const breedData = {
+                name: newBreed.name.trim(),
+                description: newBreed.description.trim(),
+                origin: newBreed.origin.trim() || null,
+                characteristics: {
+                    size: newBreed.size,
+                    activityLevel: newBreed.activityLevel || null
+                },
+                image: newBreed.imageUrl ? {
+                    url: newBreed.imageUrl,
+                    alt: newBreed.name
+                } : null
+            }
+
+            await breedsAPI.create(breedData)
+            notificationStore.success('Race ajoutée')
+            setNewBreed({ name: '', description: '', origin: '', size: '', activityLevel: '', imageUrl: '' })
+            setShowAddForm(false)
+            await fetchBreeds()
+
+        } catch (err) {
+            const message = err.response?.data?.message || 'Erreur lors de l\'ajout'
+            notificationStore.error(message)
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
+
     return (
         <div className="py-8">
             <div className="max-w-gd-page mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,6 +106,113 @@ function BreedsPage() {
                         Découvrez les caractéristiques de chaque race de chien
                     </p>
                 </div>
+
+                {/* Bouton admin */}
+                {user?.role === 'admin' && (
+                    <button
+                        onClick={() => setShowAddForm(!showAddForm)}
+                        className="mb-8 px-4 py-2 rounded-xl bg-gd-green text-gd-body font-medium hover:bg-gd-green/90 transition-colors"
+                    >
+                        {showAddForm ? 'Annuler' : 'Ajouter une race'}
+                    </button>
+                )}
+
+            {/* Formulaire admin */}
+            {showAddForm && user?.role === 'admin' && (
+                <form
+                    onSubmit={handleSubmitBreed}
+                    className="bg-gd-surface-dark rounded-2xl border border-gd-border p-6 mb-8">
+                    <h2 className="text-lg font-semibold text-gd-text mb-4">
+                        Ajouter une nouvelle race
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm text-gd-muted mb-2">Nom *</label>
+                            <input
+                                type="text"
+                                value={newBreed.name}
+                                onChange={(e) => setNewBreed(prev => ({ ...prev, name: e.target.value }))}
+                                className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text placeholder-gd-muted focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                                placeholder="Golden Retriever"
+                                maxLength={50}
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm text-gd-muted mb-2">Origine</label>
+                            <input
+                                type="text"
+                                value={newBreed.origin}
+                                onChange={(e) => setNewBreed(prev => ({ ...prev, origin: e.target.value }))}
+                                className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text placeholder-gd-muted focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                                placeholder="Royaume-Uni"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm text-gd-muted mb-2">Taille *</label>
+                            <select
+                                value={newBreed.size}
+                                onChange={(e) => setNewBreed(prev => ({ ...prev, size: e.target.value }))}
+                                className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                            >
+                                <option value="">Sélectionner</option>
+                                {DOG_SIZES.map(size => (
+                                    <option key={size.value} value={size.value}>{size.label}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm text-gd-muted mb-2">Niveau d'activité</label>
+                            <select
+                                value={newBreed.activityLevel}
+                                onChange={(e) => setNewBreed(prev => ({ ...prev, activityLevel: e.target.value }))}
+                                className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                            >
+                                <option value="">Sélectionner</option>
+                                {ACTIVITY_LEVELS.map(level => (
+                                    <option key={level.value} value={level.value}>{level.label}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="md:col-span-2">
+                            <label className="block text-sm text-gd-muted mb-2">URL de l'image</label>
+                            <input
+                                type="url"
+                                value={newBreed.imageUrl}
+                                onChange={(e) => setNewBreed(prev => ({ ...prev, imageUrl: e.target.value }))}
+                                className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text placeholder-gd-muted focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                                placeholder="https://exemple.com/image.jpg"
+                            />
+                        </div>
+
+                        <div className="md:col-span-2">
+                            <label className="block text-sm text-gd-muted mb-2">Description *</label>
+                            <textarea
+                                value={newBreed.description}
+                                onChange={(e) => setNewBreed(prev => ({ ...prev, description: e.target.value }))}
+                                className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text placeholder-gd-muted focus:outline-none focus:ring-2 focus:ring-gd-green/50 resize-none"
+                                placeholder="Description de la race..."
+                                rows={4}
+                                maxLength={2000}
+                            />
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`mt-4 px-6 py-3 rounded-xl font-medium text-gd-body transition-colors ${
+                            isSubmitting ? 'bg-gd-green/50 cursor-not-allowed' : 'bg-gd-green hover:bg-gd-green/90'
+                        }`}
+                    >
+                        {isSubmitting ? 'Ajout...' : 'Ajouter la race'}
+                    </button>
+                </form>
+            )}
 
                 {/* Filtres */}
                 <div className="bg-gd-surface-dark rounded-2xl p-4 border border-gd-border mb-8">
@@ -160,9 +324,12 @@ function BreedsPage() {
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                                 />
                                             ) : (
-                                                <svg className="w-16 h-16 text-gd-border" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
+                                                <img
+                                                    src="/logo/green-dog-W.svg"
+                                                    alt="Green Dog"
+                                                    className="h-14 opacity-60"
+                                                    style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.35))" }}
+                                                />
                                             )}
                                         </div>
 
