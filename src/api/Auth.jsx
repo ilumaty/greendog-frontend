@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════
-api/auth.api.js
+api/Auth.js
 ════════════════════════════════════════ */
 
 import api from './axiosInstance'
