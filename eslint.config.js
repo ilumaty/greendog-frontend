@@ -1,4 +1,4 @@
-// ** ESlint config (flat config) en React/ Vite **
+// ** ESlint config (flat config) **
 
 import js from '@eslint/js'
 import globals from 'globals'
