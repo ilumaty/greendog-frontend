@@ -20,7 +20,7 @@ function Header() {
     }
 
     return (
-        <header className="bg-gd-surface-dark border-b border-gd-border">
+        <header className="fixed top-0 left-0 right-0 z-50 w-full bg-gd-surface-dark border-b border-gd-border">
             <div className="max-w-gd-page mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
 
@@ -144,7 +144,7 @@ function Header() {
                                     <>
                                         <Link
                                             to="/profile"
-                                            className="flex items-center gap-2 block text-gd-text hover:text-gd-green mb-3"
+                                            className="flex items-center gap-2 text-gd-text hover:text-gd-green mb-3"
                                             onClick={() => setMenuOpen(false)}
                                         >
                                             <UserPen className="w-4 h-4 group-hover:text-gd-green transition-colors" />
