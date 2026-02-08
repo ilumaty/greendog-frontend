@@ -103,11 +103,14 @@ L'application démarre sur `http://localhost:5173`
 | `npm run preview` | Preview du build |
 | `npm run lint` | Vérification ESLint |
 
-## Limitations connues
+## Limitations connues en dévelopement future
 
 - L'édition des données de santé (problèmes courants, soins préventifs) n'est pas disponible via l'interface admin. Ces données sont gérées directement en base de données.
 - Système de commentaires non implémenté côté interface (API backend prête)
 
+## License
+
+MIT License
 
 ## Lien avec le Backend
 
