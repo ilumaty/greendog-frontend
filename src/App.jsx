@@ -21,6 +21,7 @@ import CommunityPage from './pages/CommunityPage'
 import ProfilePage from './pages/ProfilePage'
 import AboutPage from './pages/AboutPage'
 import NotFoundPage from './pages/NotFoundPage'
+import AdminUsersPage from './pages/AdminUsersPage'
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage'
@@ -70,6 +71,12 @@ function App() {
                     <Route path="/profile" element={
                         <ProtectedRoute>
                             <ProfilePage />
+                        </ProtectedRoute>
+                    } />
+
+                    <Route path="/admin/users" element={
+                        <ProtectedRoute>
+                            <AdminUsersPage />
                         </ProtectedRoute>
                     } />
 

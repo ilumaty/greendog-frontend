@@ -39,36 +39,38 @@ GreenDog-frontend/
 
 ### Détail des fichiers sources
 
-| Fichier                              | Description |
-|--------------------------------------|-------------|
-| **api**                              ||
-| `api/axiosInstance.js`               | Instance Axios avec intercepteurs JWT |
-| `api/Auth.jsx`                       | Endpoints authentification |
-| `api/Breeds.jsx`                     | Endpoints races de chiens |
-| `api/Posts.jsx`                      | Endpoints publications communauté |
-| **components**                       ||
-| `components/Auth/ProtectedRoute.jsx` | HOC protection des routes privées |
-| `components/Layout/Header.jsx`       | Navigation principale |
-| `components/Layout/Footer.jsx`       | Pied de page |
-| `components/Layout/MainLayout.jsx`   | Layout global de l'application |
-| **pages**                            ||
-| `pages/Home.jsx`                     | Page d'accueil |
-| `pages/BreedsPage.jsx`               | Liste des races avec filtres |
-| `pages/BreedDetailPage.jsx`          | Détail d'une race |
-| `pages/CommunityPage.jsx`            | Publications de la communauté |
-| `pages/ProfilePage.jsx`              | Profil utilisateur et favoris |
-| `pages/AboutPage.jsx`                | Page à propos |
-| `pages/NotFoundPage.jsx`             | Page 404 |
-| `pages/auth/`                        | Pages connexion/inscription |
-| **store**                            ||
-| `store/index.jsx`                    | Export centralisé des stores |
-| `store/authStore.jsx`                | État authentification utilisateur |
-| `store/breedsStore.jsx`              | État et actions races |
-| `store/favoritesStore.jsx`           | Gestion des favoris |
-| `store/notificationStore.jsx`        | Système de notifications |
-| **utils**                            ||
-| `utils/constants.jsx`                | Constantes (tailles, niveaux activité) |
-| `utils/validation.jsx`               | Fonctions de validation formulaires |
+| Fichier                             | Description                            |
+|-------------------------------------|----------------------------------------|
+| **api**                             |                                        |
+| `api/axiosInstance.js`              | Instance Axios avec intercepteurs JWT  |
+| `api/Auth.jsx`                      | Endpoints authentification             |
+| `api/Breeds.jsx`                    | Endpoints races de chiens              |
+| `api/Posts.jsx`                     | Endpoints publications communauté      |
+| `api/Users.js`                      | Endpoints Admin (gestion des rôles)    |
+| **components**                      |                                        |
+| `components/Auth/ProtectedRoute.jsx` | HOC protection des routes privées      |
+| `components/Layout/Header.jsx`      | Navigation principale                  |
+| `components/Layout/Footer.jsx`      | Pied de page                           |
+| `components/Layout/MainLayout.jsx`  | Layout global de l'application         |
+| **pages**                           |                                        |
+| `pages/Home.jsx`                    | Page d'accueil                         |
+| `pages/BreedsPage.jsx`              | Liste des races avec filtres           |
+| `pages/BreedDetailPage.jsx`         | Détail d'une race                      |
+| `pages/CommunityPage.jsx`           | Publications de la communauté          |
+| `pages/ProfilePage.jsx`             | Profil utilisateur et favoris          |
+| `pages/AboutPage.jsx`               | Page à propos                          |
+| `pages/AdminUsersPage.jsx`          | Gestion des utilisateurs (admin)       |
+| `pages/NotFoundPage.jsx`            | Page 404                               |
+| `pages/auth/`                       | Pages connexion/inscription            |
+| **store**                           |                                        |
+| `store/index.jsx`                   | Export centralisé des stores           |
+| `store/authStore.jsx`               | État authentification utilisateur      |
+| `store/breedsStore.jsx`             | État et actions races                  |
+| `store/favoritesStore.jsx`          | Gestion des favoris                    |
+| `store/notificationStore.jsx`       | Système de notifications               |
+| **utils**                           |                                        |
+| `utils/constants.jsx`               | Constantes (tailles, niveaux activité) |
+| `utils/validation.jsx`              | Fonctions de validation formulaires    |
 
 ## Démarrage rapide
 

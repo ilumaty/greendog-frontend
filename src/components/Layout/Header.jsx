@@ -56,6 +56,14 @@ function Header() {
                         >
                             A propos
                         </Link>
+
+                        {/* Actions Admin */}
+                        {user?.role === 'admin' && (
+                            <Link to="/admin/users" className="text-gd-muted hover:text-gd-green transition-colors">
+                                Gestion utilisateurs
+                            </Link>
+                        )}
+
                     </nav>
 
                     {/* Actions utilisateur */}
@@ -138,6 +146,16 @@ function Header() {
                             >
                                 A propos
                             </Link>
+
+                            {user?.role === 'admin' && (
+                                <Link
+                                    to="/admin/users"
+                                    className="text-gd-muted hover:text-gd-green transition-colors"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    Gestion utilisateurs
+                                </Link>
+                            )}
 
                             <div className="pt-3 border-t border-gd-border">
                                 {isAuthenticated ? (
