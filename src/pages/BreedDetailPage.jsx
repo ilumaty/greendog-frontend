@@ -28,7 +28,13 @@ function BreedDetailPage() {
         origin: '',
         size: '',
         activityLevel: '',
-        imageUrl: ''
+        imageUrl: '',
+        weight_min: '',
+        weight_max: '',
+        height_min: '',
+        height_max: '',
+        lifeExpectancy_min: '',
+        lifeExpectancy_max: '',
     })
 
     // Admin DELETE
@@ -121,7 +127,14 @@ function BreedDetailPage() {
             origin: breed?.origin || '',
             size: breed?.characteristics?.size || '',
             activityLevel: breed?.characteristics?.activityLevel || '',
-            imageUrl: breed?.image?.url || ''
+            imageUrl: breed?.image?.url || '',
+
+            weight_min: breed?.characteristics?.weight?.min || '',
+            weight_max: breed?.characteristics?.weight?.max || '',
+            height_min: breed?.characteristics?.height?.min || '',
+            height_max: breed?.characteristics?.height?.max || '',
+            lifeExpectancy_min: breed?.characteristics?.lifeExpectancy?.min || '',
+            lifeExpectancy_max: breed?.characteristics?.lifeExpectancy?.max || '',
         })
 
         setShowEditModal(true)
@@ -144,9 +157,18 @@ function BreedDetailPage() {
                 ...(editBreed.origin.trim() ? { origin: editBreed.origin.trim() } : {}),
 
                 characteristics: {
-
-                    ...(breed.characteristics || {}),
-
+                    weight: {
+                        min: parseFloat(editBreed.weight_min),
+                        max: parseFloat(editBreed.weight_max)
+                    },
+                    height: {
+                        min: parseFloat(editBreed.height_min),
+                        max: parseFloat(editBreed.height_max)
+                    },
+                    lifeExpectancy: {
+                        min: parseInt(editBreed.lifeExpectancy_min),
+                        max: parseInt(editBreed.lifeExpectancy_max)
+                    },
                     size: editBreed.size,
                     ...(editBreed.activityLevel ? { activityLevel: editBreed.activityLevel } : {}),
                 },
@@ -362,7 +384,7 @@ function BreedDetailPage() {
                     )}
 
                     {/* Soins */}
-                    {breed.care && (
+                    {breed.care && (breed.care.grooming || breed.care.exercise || breed.care.diet) && (
                         <div className="bg-gd-surface-dark rounded-2xl border border-gd-border p-6">
                             <h2 className="text-xl font-heading font-semibold text-gd-text mb-4">
                                 Soins
@@ -394,7 +416,7 @@ function BreedDetailPage() {
                     )}
 
                     {/* Santé */}
-                    {breed.health && (
+                    {breed.care && (breed.care.grooming || breed.care.exercise || breed.care.diet) && (
                         <div className="bg-gd-surface-dark rounded-2xl border border-gd-border p-6 md:col-span-2">
                             <h2 className="text-xl font-heading font-semibold text-gd-text mb-4">
                                 Santé
@@ -437,7 +459,7 @@ function BreedDetailPage() {
                                     />
 
                                     {/* Edit modal */}
-                                    <div className="relative w-full max-w-2xl rounded-2xl border border-gd-border bg-gd-surface-dark p-6 shadow-2xl">
+                                    <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-gd-border bg-gd-surface-dark p-6 shadow-2xl">
                                         <h3 className="text-lg font-semibold text-gd-text mb-4">
                                             Modifier la race
                                         </h3>
@@ -492,10 +514,86 @@ function BreedDetailPage() {
                                                 </select>
                                             </div>
 
+                                            <div>
+                                                <label className="block text-sm text-gd-muted mb-2">
+                                                    Poids (min) - kg
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    step="0.1"
+                                                    value={editBreed.weight_min}
+                                                    onChange={(e) => setEditBreed(prev => ({ ...prev, weight_min: e.target.value }))}
+                                                    className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm text-gd-muted mb-2">
+                                                    Poids (max) - kg
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    step="0.1"
+                                                    value={editBreed.weight_max}
+                                                    onChange={(e) => setEditBreed(prev => ({ ...prev, weight_max: e.target.value }))}
+                                                    className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm text-gd-muted mb-2">
+                                                    Taille (min) - cm
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    step="0.1"
+                                                    value={editBreed.height_min}
+                                                    onChange={(e) => setEditBreed(prev => ({ ...prev, height_min: e.target.value }))}
+                                                    className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm text-gd-muted mb-2">
+                                                    Taille (max) - cm
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    step="0.1"
+                                                    value={editBreed.height_max}
+                                                    onChange={(e) => setEditBreed(prev => ({ ...prev, height_max: e.target.value }))}
+                                                    className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm text-gd-muted mb-2">
+                                                    Espérance de vie (min) - ans
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    value={editBreed.lifeExpectancy_min}
+                                                    onChange={(e) => setEditBreed(prev => ({ ...prev, lifeExpectancy_min: e.target.value }))}
+                                                    className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm text-gd-muted mb-2">
+                                                    Espérance de vie (max) - ans
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    value={editBreed.lifeExpectancy_max}
+                                                    onChange={(e) => setEditBreed(prev => ({ ...prev, lifeExpectancy_max: e.target.value }))}
+                                                    className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text focus:outline-none focus:ring-2 focus:ring-gd-green/50"
+                                                />
+                                            </div>
+
                                             <div className="md:col-span-2">
                                                 <label className="block text-sm text-gd-muted mb-2">URL de l'image</label>
                                                 <input
-                                                    type=""
+                                                    type="text"
                                                     value={editBreed.imageUrl}
                                                     onChange={(e) => setEditBreed(prev => ({ ...prev, imageUrl: e.target.value }))}
                                                     className="w-full px-4 py-3 rounded-xl bg-gd-body border border-gd-border text-gd-text focus:outline-none focus:ring-2 focus:ring-gd-green/50"
