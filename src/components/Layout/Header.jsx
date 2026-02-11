@@ -122,6 +122,12 @@ function Header() {
                     <div className="md:hidden py-4 border-t border-gd-border">
                         <nav className="flex flex-col gap-3">
                             <Link
+                                to="/"
+                                onClick={() => setMenuOpen(false)}
+                                className="text-gd-text hover:text-gd-green transition-colors">
+                                Accueil
+                            </Link>
+                            <Link
                                 to="/breeds"
                                 className="text-gd-text hover:text-gd-green transition-colors"
                                 onClick={() => setMenuOpen(false)}
