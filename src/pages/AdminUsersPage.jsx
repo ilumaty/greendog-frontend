@@ -61,7 +61,7 @@ function AdminUsersPage() {
             const { data } = await usersAPI.updateRole(targetUserId, newRole)
 
             setUsers(prev =>
-                prev.map(u => u._id === targetUserId ? data.user : u)
+                prev.map(u => u._id === targetUserId ? { ...u, ...data.user } : u)
             )
 
             notificationStore.success('Rôle modifié')
